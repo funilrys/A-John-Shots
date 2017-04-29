@@ -10,9 +10,10 @@ class Hash(object):
     :param algorithm: A string, the algorithm to use.
     """
 
-    def __init__(self, path, algorithm='sha512'):
+    def __init__(self, path, algorithm='sha512', only_hash=False):
         self.path = path
         self.algorithm = algorithm
+        self.only_hash = only_hash
 
         self.valid_algorithms = ['md5', 'sha1', 'sha224', 'sha384', 'sha512']
 
@@ -36,5 +37,8 @@ class Hash(object):
         result = {}
         if path.isfile(self.path) and self.algorithm in self.valid_algorithms:
             result[self.algorithm] = self.hash_data(self.algorithm)
-            return result[self.algorithm]
+
+            if only_hash:
+                return result[self.algorithm]
+            return result
         return None
