@@ -35,10 +35,11 @@ class Hash(object):
         """Return the hash of the given file"""
 
         result = {}
+        result[self.algorithm] = None
+
         if path.isfile(self.path) and self.algorithm in self.valid_algorithms:
             result[self.algorithm] = self.hash_data(self.algorithm)
 
-            if only_hash:
-                return result[self.algorithm]
-            return result
-        return None
+        if self.only_hash:
+            return result[self.algorithm]
+        return result
