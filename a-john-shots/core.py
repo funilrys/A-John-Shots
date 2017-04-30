@@ -10,6 +10,10 @@ class Core(object):
     """A simple script to get Security Hash Algorithms into JSON format
 
     :param path: A string, the path of the file or the directory we have to return.
+    :param search: A string, the pattern the file have to match in ordrer to be included in the results
+    :param output: A bool, Print on screen (False), print on file (True)
+    :param output_destination: A string, the destination of the results
+    :param algorithm: A string, the algorithm to use. Possibilites: all,sha1,sha224,sha384,sha512
     """
 
     def __init__(self, path, **args):
