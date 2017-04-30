@@ -30,6 +30,29 @@ class Core(object):
             return '.' + self.DIRECTORY_SEPARATOR + self.DEFAULT_OUTPUT_FILE
         return output_destination
 
+    def get(self):
+        """Brain of the program. In charge to print the results into JSON format"""
+
+        result = {}
+        file_hash = {}
+
+        if path.isfile(self.path):
+            file_hash = Hash(self.path, self.algorithm, False).get()
+            result = self.hierarchy(file_hash, True)
+        elif path.isdir(self.path):
+            for root, dirs, files in walk(self.path):
+                for file in files:
+                    sub = self.get_file_under_directory(root, file)
+                    result = combine_dicts(sub, result)
+        else:
+            return None
+
+        if self.output:
+            with open(self.output_destination, 'w') as file:
+                return dump(result, file, ensure_ascii=False, indent=4, sort_keys=True)
+        print(dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        return
+
     def hierarchy(self, hash_of_file):
         """Build the dictionary of data
 
@@ -65,26 +88,3 @@ class Core(object):
         result = self.hierarchy(file_hash)
 
         return result
-
-    def get(self):
-        """Brain of the program. In charge to print the results into JSON format"""
-
-        result = {}
-        file_hash = {}
-
-        if path.isfile(self.path):
-            file_hash = Hash(self.path, self.algorithm, False).get()
-            result = self.hierarchy(file_hash, True)
-        elif path.isdir(self.path):
-            for root, dirs, files in walk(self.path):
-                for file in files:
-                    sub = self.get_file_under_directory(root, file)
-                    result = combine_dicts(sub, result)
-        else:
-            return None
-
-        if self.output:
-            with open(self.output_destination, 'w') as file:
-                return dump(result, file, ensure_ascii=False, indent=4, sort_keys=True)
-        print(dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
-        return
