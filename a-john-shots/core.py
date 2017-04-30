@@ -10,18 +10,23 @@ class Core(object):
     """A simple script to get Security Hash Algorithms into JSON format
 
     :param path: A string, the path of the file or the directory we have to return.
-    :param algorithm: A string, the algorithm to use when hashing.
     """
 
-    def __init__(self, path, search=None, output=False, output_destination=None, algorithm='sha512'):
+    def __init__(self, path, **args):
         self.DIRECTORY_SEPARATOR = '/'
         self.DEFAULT_OUTPUT_FILE = 'faith-slosh.json'
 
         self.path = path
-        self.search = self.data_to_search(search)
-        self.output = output
-        self.output_destination = self.destination(output_destination)
-        self.algorithm = algorithm
+
+        optional_arguments = {
+            "search": None,
+            "output": False,
+            "output_destination": None,
+            "algorithm": "sha512"
+        }
+
+        for (arg, default) in optional_arguments.items():
+            setattr(self, arg, args.get(arg, default))
 
         self.ppath = [self.path]
 
