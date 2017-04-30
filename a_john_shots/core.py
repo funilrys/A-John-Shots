@@ -1,8 +1,8 @@
 #!/bin/env python
-from hash import Hash
-from helpers import unset_empty, combine_dicts
+from .hash import Hash
+from .helpers import unset_empty, combine_dicts
 from json import dumps, dump
-from regex import Regex
+from .regex import Regex
 from os import path, walk
 
 
