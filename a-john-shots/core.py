@@ -2,6 +2,7 @@
 from hash import Hash
 from helpers import unset_empty, combine_dicts
 from json import dumps, dump
+from regex import Regex
 from os import path, walk
 
 
@@ -12,23 +13,31 @@ class Core(object):
     :param algorithm: A string, the algorithm to use when hashing.
     """
 
-    def __init__(self, path, output=False, output_destination=None, algorithm='sha512'):
+    def __init__(self, path, search=None, output=False, output_destination=None, algorithm='sha512'):
         self.DIRECTORY_SEPARATOR = '/'
         self.DEFAULT_OUTPUT_FILE = 'faith-slosh.json'
 
         self.path = path
+        self.search = self.data_to_search(search)
         self.output = output
         self.output_destination = self.destination(output_destination)
         self.algorithm = algorithm
 
         self.ppath = [self.path]
 
-    def destination(self, output_destination):
-        """A simple method to fileter self.destination"""
+    def data_to_search(self, data):
+        """A simple method to filter self.search"""
 
-        if output_destination == False or output_destination == None:
-            return '.' + self.DIRECTORY_SEPARATOR + self.DEFAULT_OUTPUT_FILE
-        return output_destination
+        if isinstance(data, str):
+            return data
+        return False
+
+    def destination(self, output_destination):
+        """A simple method to filter self.destination"""
+
+        if isinstance(output_destination, str):
+            return output_destination
+        return '.' + self.DIRECTORY_SEPARATOR + self.DEFAULT_OUTPUT_FILE
 
     def get(self):
         """Brain of the program. In charge to print the results into JSON format"""
@@ -43,7 +52,10 @@ class Core(object):
             for root, dirs, files in walk(self.path):
                 for file in files:
                     sub = self.get_file_under_directory(root, file)
-                    result = combine_dicts(sub, result)
+                    if self.search == False:
+                        result = combine_dicts(sub, result)
+                    elif Regex(file, self.search).match():
+                        result = combine_dicts(sub, result)
         else:
             return None
 
