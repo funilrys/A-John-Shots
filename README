@@ -1,0 +1,23 @@
+A John Shots
+=============
+
+Python module/library for saving Security Hash Algorithms into JSON format.
+
+By Funilrys  http://github.com/funilrys
+
+
+Features
+=============
+
+ * Works with python2.x and python3.x
+ * Get SHA1, SHA224, SHA384,SHA512,MD5
+ * Search file in directory and get the result of one of the previous algorithm
+ * Print results on screen in JsON format
+ * Print results on file in JSON format
+
+
+Usage example
+=============
+
+>>> import a_john_shots
+>>> a_john_shots.get('./', search='\.py', output=False)
