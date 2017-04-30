@@ -13,12 +13,12 @@ class Core(object):
     :param search: A string, the pattern the file have to match in ordrer to be included in the results
     :param output: A bool, Print on screen (False), print on file (True)
     :param output_destination: A string, the destination of the results
-    :param algorithm: A string, the algorithm to use. Possibilites: all,sha1,sha224,sha384,sha512
+    :param algorithm: A string, the algorithm to use. Possibility: all, sha1, sha224, sha384, sha512
     """
 
     def __init__(self, path, **args):
         self.DIRECTORY_SEPARATOR = '/'
-        self.DEFAULT_OUTPUT_FILE = 'faith-slosh.json'
+        self.DEFAULT_OUTPUT_FILE = '.' + self.DIRECTORY_SEPARATOR + 'faith-slosh.json'
 
         self.path = path
 
@@ -30,7 +30,12 @@ class Core(object):
         }
 
         for (arg, default) in optional_arguments.items():
-            setattr(self, arg, args.get(arg, default))
+            if arg == "search":
+                setattr(self, arg, args.get(arg, self.data_to_search(default)))
+            elif arg == "output_destination":
+                setattr(self, arg, args.get(arg, self.destination(default)))
+            else:
+                setattr(self, arg, args.get(arg, default))
 
         self.ppath = [self.path]
 
@@ -46,7 +51,7 @@ class Core(object):
 
         if isinstance(output_destination, str):
             return output_destination
-        return '.' + self.DIRECTORY_SEPARATOR + self.DEFAULT_OUTPUT_FILE
+        return self.DEFAULT_OUTPUT_FILE
 
     def get(self):
         """Brain of the program. In charge to print the results into JSON format"""
@@ -68,10 +73,12 @@ class Core(object):
         else:
             return None
 
-        if self.output:
+        if self.output or self.output_destination != self.DEFAULT_OUTPUT_FILE:
             with open(self.output_destination, 'w') as file:
-                return dump(result, file, ensure_ascii=False, indent=4, sort_keys=True)
-        print(dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+                dump(result, file, ensure_ascii=False, indent=4, sort_keys=True)
+
+        if self.output == False:
+            print(dumps(result, ensure_ascii=False, indent=4, sort_keys=True))
         return
 
     def hierarchy(self, hash_of_file):
