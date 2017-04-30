@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #    python-regex - A simple implementation ot the python.re package
-#    Copyright (C) 2017  Nissar Chababy <contact at funilrys dot com>
+#    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
