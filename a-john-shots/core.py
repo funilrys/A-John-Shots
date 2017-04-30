@@ -13,6 +13,8 @@ class Core(object):
     """
 
     def __init__(self, path, algorithm='sha512'):
+        self.DIRECTORY_SEPARATOR = '/'
+
         self.path = path
         self.ppath = [self.path]
         self.algorithm = algorithm
@@ -26,7 +28,7 @@ class Core(object):
         result = {}
 
         for item in self.ppath:
-            hierarchy = unset_empty(item.split('/'))
+            hierarchy = unset_empty(item.split(self.DIRECTORY_SEPARATOR))
             local_result = result
 
             for funilrys in hierarchy:
