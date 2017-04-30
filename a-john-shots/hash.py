@@ -11,11 +11,12 @@ class Hash(object):
     """
 
     def __init__(self, path, algorithm='sha512', only_hash=False):
+        self.VALID_ALGORITHMS = ['all', 'md5',
+                                 'sha1', 'sha224', 'sha384', 'sha512']
+
         self.path = path
         self.algorithm = algorithm
         self.only_hash = only_hash
-
-        self.valid_algorithms = ['md5', 'sha1', 'sha224', 'sha384', 'sha512']
 
     def hash_data(self, algo):
         """Give/get the hash of the given file
@@ -35,10 +36,16 @@ class Hash(object):
         """Return the hash of the given file"""
 
         result = {}
-        result[self.algorithm] = None
 
-        if path.isfile(self.path) and self.algorithm in self.valid_algorithms:
-            result[self.algorithm] = self.hash_data(self.algorithm)
+        if path.isfile(self.path) and self.algorithm in self.VALID_ALGORITHMS:
+            if self.algorithm == 'all':
+                del self.VALID_ALGORITHMS[0]
+                for algo in self.VALID_ALGORITHMS:
+                    result[algo] = None
+                    result[algo] = self.hash_data(algo)
+            else:
+                result[self.algorithm] = None
+                result[self.algorithm] = self.hash_data(self.algorithm)
 
         if self.only_hash:
             return result[self.algorithm]
