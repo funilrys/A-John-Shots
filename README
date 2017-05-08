@@ -8,12 +8,13 @@ By Funilrys  http://github.com/funilrys
 
 Features
 =============
-
  * Works with python2.x and python3.x
- * Get SHA1, SHA224, SHA384,SHA512,MD5
- * Search file in directory and get the result of one of the previous algorithm
+ * Read a path
+ * Search for file if given path is a directory
+ * Execute SHA1,SHA224,SHA384,SHA512 or MD5 over a file
  * Print results on screen in JsON format
  * Print results on file in JSON format
+ * Exclude a file/dir which match path or a pattern
 
 
 Usage example

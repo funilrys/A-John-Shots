@@ -2,14 +2,15 @@
 
 > Python module/library for saving Security Hash Algorithms into JSON format.
 
-_**Current version: 1.0.0**_
+_**Current version: 1.0.1**_
 
 ## Freatures
-
+- Works with python2.x and python3.x
 - Read a path
 - Search for file if given path is a directory
 - Execute **SHA1,SHA224,SHA384,SHA512 or MD5** over a file
 - Get the result in JSON format on **screen** or **file**
+- Exclude a file/dir which match path or a pattern
 
 ## Installation
 
