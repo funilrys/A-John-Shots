@@ -20,7 +20,7 @@ from distutils.core import setup
 
 setup(
     name='a_john_shots',
-    version="1.0.0",
+    version="1.0.1",
     description='Python module/library for saving Security Hash Algorithms into JSON format.',
     long_description=open('README').read(),
     author='funilrys',
