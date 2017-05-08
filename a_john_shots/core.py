@@ -34,6 +34,7 @@ class Core(object):
     :param output: A bool, Print on screen (False), print on file (True)
     :param output_destination: A string, the destination of the results
     :param algorithm: A string, the algorithm to use. Possibility: all, sha1, sha224, sha384, sha512
+    :param exclude: A list, the list of path, filename or in general, a pattern to exclude
     """
 
     def __init__(self, path, **args):
@@ -46,7 +47,8 @@ class Core(object):
             "search": None,
             "output": False,
             "output_destination": None,
-            "algorithm": "sha512"
+            "algorithm": "sha512",
+            "exclude": []
         }
 
         for (arg, default) in optional_arguments.items():
@@ -131,8 +133,9 @@ class Core(object):
 
         result = {}
         path_to_file = path.join(root, file)
-        self.ppath = unset_empty(path_to_file.split(self.path))
-        file_hash = Hash(path_to_file, self.algorithm).get()
-        result = self.hierarchy(file_hash)
+        if Regex(path_to_file,self.exclude).match() == False:
+            self.ppath = unset_empty(path_to_file.split(self.path))
+            file_hash = Hash(path_to_file, self.algorithm).get()
+            result = self.hierarchy(file_hash)
 
         return result
