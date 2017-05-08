@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
 
 #    python-regex - A simple implementation ot the python.re package
 #    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
@@ -35,12 +35,26 @@ class Regex(object):
     def match(self):
         """Used to get exploitable result of re.search"""
 
-        toMatch = compile(self.regex)
-        result = toMatch.search(self.data)
+        if type(self.data) is list:
+            result = []
+            for item in self.regex:
+                to_match = compile(item)
+                local_result = to_match.search(self.data)
 
-        if self.return_data and result is not None:
-            return result.group(self.group).strip()
-        elif self.return_data == False and result is not None:
-            return True
-        else:
+                if self.return_data and local_result is not None:
+                    result.append(local_result.group(self.group))
+                elif self.return_data == False and local_result is not None:
+                    return True
+            if self.return_data and result:
+                return result
             return False
+        elif isinstance(self.data,str) and isinstance(self.regex,str):
+            toMatch = compile(self.regex)
+            result = toMatch.search(self.data)
+
+            if self.return_data and result is not None:
+                return result.group(self.group).strip()
+            elif self.return_data == False and result is not None:
+                return True
+            return False
+        return None
