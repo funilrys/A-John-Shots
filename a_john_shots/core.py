@@ -83,7 +83,7 @@ class Core(object):
 
         if path.isfile(self.path):
             file_hash = Hash(self.path, self.algorithm, False).get()
-            result = self.hierarchy(file_hash, True)
+            result = self.hierarchy(file_hash)
         elif path.isdir(self.path):
             for root, dirs, files in walk(self.path):
                 for file in files:
