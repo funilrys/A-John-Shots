@@ -2,7 +2,7 @@
 
 > Python module/library for saving Security Hash Algorithms into JSON format.
 
-_**Current version: 1.0.2**_
+_**Current version: 1.0.3**_
 
 ## Freatures
 - Works with python2.x and python3.x
