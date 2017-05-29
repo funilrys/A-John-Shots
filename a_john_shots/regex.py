@@ -35,11 +35,24 @@ class Regex(object):
     def match(self):
         """Used to get exploitable result of re.search"""
 
-        if type(self.data) is list:
+        if type(self.regex) is list and isinstance(self.data,str):
             result = []
             for item in self.regex:
                 to_match = compile(item)
                 local_result = to_match.search(self.data)
+
+                if self.return_data and local_result is not None:
+                    result.append(local_result.group(self.group))
+                elif self.return_data == False and local_result is not None:
+                    return True
+            if self.return_data and result:
+                return result
+            return False
+        elif type(self.data) is list and isinstance(self.Regex,str):
+            result = []
+            for item in self.data:
+                to_match = compile(self.regex)
+                local_result = to_match.search(item)
 
                 if self.return_data and local_result is not None:
                     result.append(local_result.group(self.group))
