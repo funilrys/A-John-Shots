@@ -40,6 +40,7 @@ class Core(object):
     def __init__(self, path, **args):
         self.DIRECTORY_SEPARATOR = '/'
         self.DEFAULT_OUTPUT_FILE = '.' + self.DIRECTORY_SEPARATOR + 'faith-slosh.json'
+        self.DEFAULT_EXCLUDE = ['\.git','vendor','nbproject']
 
         self.path = path
 
@@ -60,6 +61,7 @@ class Core(object):
                 setattr(self, arg, args.get(arg, default))
 
         self.ppath = [self.path]
+        self.exclude.extend(self.DEFAULT_EXCLUDE)
 
     def data_to_search(self, data):
         """A simple method to filter self.search"""
