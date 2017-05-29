@@ -1,3 +1,0 @@
-[submodule "a_john_shots/regex"]
-	path = a_john_shots/regex
-	url = git://github.com/funilrys/python-regex.git
