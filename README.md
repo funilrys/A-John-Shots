@@ -30,7 +30,6 @@ To contribute, you have to **send a new [Pull Request](https://github.com/funilr
 If you plan to **send a new [Pull Request](https://github.com/funilrys/A-John-Shots/compare)**:
 
 - All **contributions/modifications** must be done under **the `dev` or a new branch**.
-- You should follow the following convention
 - Your [Pull Request](https://github.com/funilrys/A-John-Shots/compare) description should be as possible description
 - All your commits should be signed:
 
