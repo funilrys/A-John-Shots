@@ -3,33 +3,30 @@
 #    A-John-Shots - Python module/library for saving Security Hash Algorithms into JSON format.
 #    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#    SOFTWARE.
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
 
 def unset_empty(list_to_format):
-    """Delete all empty element(s) from a given lis
+    """
+    Delete all empty element(s) from a given list.
 
-    :param list_to_format: A list, List to format
+    :param list_to_format: A list, List to format.
     """
 
     return ' '.join(list_to_format).split()
 
 
 def combine_dicts(dict1, dict2):
-    """Combine two dictionnaries into one
+    """
+    Combine two dictionnaries.
 
     :param dict1: A dict, First dict
     :param dict2: A dict, Second dict
