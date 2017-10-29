@@ -2,9 +2,8 @@
 
 > Python module/library for saving Security Hash Algorithms into JSON format.
 
-_**Current version: 1.0.3**_
-
 ## Freatures
+
 - Works with python2.x and python3.x
 - Read a path
 - Search for file if given path is a directory
@@ -17,22 +16,29 @@ _**Current version: 1.0.3**_
 ### From Github
 
 ```bash
-git clone https://github.com/funilrys/A-John-Shots.git
-cd A-John-Shots
-python setup.py install
+git clone https://github.com/funilrys/A-John-Shots.git && cd A-John-Shots && python setup.py install
 ```
-______
+
+--------------------------------------------------------------------------------
+
 # How to contribute?
 
 To contribute, you have to **send a new [Pull Request](https://github.com/funilrys/A-John-Shots/compare)** after you **[forked](https://github.com/funilrys/A-John-Shots/pulls#fork-destination-box)** and edited the script(s).
 
-## WARNING :warning:
+# :warning: WARNING :warning:
 
-### DO NOT FORGET
+If you plan to **send a new [Pull Request](https://github.com/funilrys/A-John-Shots/compare)**:
 
-- To sign your commit(s) with **"Signed-off by: FirstName LastName <e.dot at service dot com>"** _**and/or**_ simply **sign your commit(s)** with **PGP** _(Please read more [here](https://github.com/blog/2144-gpg-signature-verification))_.
-- All **contributions/modifications** must be done under **the `dev` or a new branch** if you plan to **send a new [Pull Request](https://github.com/funilrys/A-John-Shots/compare)**.
--  :warning::warning::warning: Every **contributions/modifications** which are under **master** _(exception for minor changes)_ **will not be merged**.
+- All **contributions/modifications** must be done under **the `dev` or a new branch**.
+- You should follow the following convention
+- Your [Pull Request](https://github.com/funilrys/A-John-Shots/compare) description should be as possible description
+- All your commits should be signed:
+
+  - With **"Signed-off by: FirstName LastName < email[at]service[dot]com >"** at the end of the commit message/description
+
+- **AND/OR**
+
+  - With **PGP** _(Please read more [here](https://github.com/blog/2144-gpg-signature-verification))_.
 
 --------------------------------------------------------------------------------
 
@@ -43,9 +49,11 @@ To contribute, you have to **send a new [Pull Request](https://github.com/funilr
 ```python
 import a_john_shots
 
-"""The following search every files under the current directory and print the
+"""
+The following search every files under the current directory and print the
 result on screen only.
 """
+
 a_john_shots.get('.')
 ```
 
@@ -54,8 +62,11 @@ a_john_shots.get('.')
 ```python
 import a_john_shots
 
-"""The following search every files which match regex and print the
-result on screen only."""
+"""
+The following search every files which match regex and print the
+result on screen only.
+"""
+
 regex = r'\.py'
 a_john_shots.get('.',search=regex)
 ```
@@ -65,8 +76,11 @@ a_john_shots.get('.',search=regex)
 ```python
 import a_john_shots
 
-"""The following search every files which match regex, print the
-result on screen and save the results under ajohnshots.json."""
+"""
+The following search every files which match regex, print the
+result on screen and save the results under a file named ajohnshots.json.
+"""
+
 regex = r'\.py'
 a_john_shots.get('.',search=regex,output=False,output_destination='ajohnshots.json')
 ```
@@ -76,17 +90,27 @@ a_john_shots.get('.',search=regex,output=False,output_destination='ajohnshots.js
 ```python
 import a_john_shots
 
-"""The following search every files which match regex and save the results under ajohnshots.json."""
+"""
+The following search every files which match regex and save the results under
+a file named ajohnshots.json.
+"""
+
 regex = r'\.py'
 a_john_shots.get('.',search=regex,output=True,output_destination='ajohnshots.json')
 ```
 
 ## Change algorithm
+
 Possibility: `'all'`,`'md5'`,`'sha1'`,`'sha224'`,`'sha384'`,`'sha512'`
+
 ```python
 import a_john_shots
 
-"""The following search every files which match regex,execute all algorithms against all files and save the results under ajohnshots.json."""
+"""
+The following search every files which match regex,execute all algorithms
+against all files and save the results under a file named ajohnshots.json.
+"""
+
 regex = r'\.py'
 a_john_shots.get('.',search=regex,output=True,algorithm='all',output_destination='ajohnshots.json')
 ```
