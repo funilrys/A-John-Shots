@@ -3,27 +3,23 @@
 #    A-John-Shots - Python module/library for saving Security Hash Algorithms into JSON format.
 #    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#    SOFTWARE.
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
 
-from .hash import Hash
-from .helpers import unset_empty, combine_dicts
-from json import dumps, dump
-from .regex import Regex
+from json import dump, dumps
 from os import path, walk
+
+from .hash import Hash
+from .helpers import combine_dicts, unset_empty
+from .regex import Regex
 
 
 class Core(object):
@@ -40,7 +36,7 @@ class Core(object):
     def __init__(self, path, **args):
         self.DIRECTORY_SEPARATOR = '/'
         self.DEFAULT_OUTPUT_FILE = '.' + self.DIRECTORY_SEPARATOR + 'faith-slosh.json'
-        self.DEFAULT_EXCLUDE = ['\.git','vendor','nbproject']
+        self.DEFAULT_EXCLUDE = ['\.git', 'vendor', 'nbproject']
 
         self.path = path
 
@@ -64,21 +60,32 @@ class Core(object):
         self.exclude.extend(self.DEFAULT_EXCLUDE)
 
     def data_to_search(self, data):
-        """A simple method to filter self.search"""
+        """
+        A simple method to filter self.search if it's not a string
+
+        :param data: A string, the data to search
+        """
 
         if isinstance(data, str):
             return data
         return False
 
     def destination(self, output_destination):
-        """A simple method to filter self.destination"""
+        """
+        A simple method to filter self.destination if it's not a string
+
+        :param output_destination: A string, the output destination
+        """
 
         if isinstance(output_destination, str):
             return output_destination
         return self.DEFAULT_OUTPUT_FILE
 
     def get(self):
-        """Brain of the program. In charge to print the results into JSON format"""
+        """
+        Brain of the program.
+        In charge to print the results into JSON format
+        """
 
         result = {}
         file_hash = {}
@@ -90,7 +97,7 @@ class Core(object):
             for root, dirs, files in walk(self.path):
                 for file in files:
                     sub = self.get_file_under_directory(root, file)
-                    if self.search == False:
+                    if not self.search:
                         result = combine_dicts(sub, result)
                     elif Regex(file, self.search).match():
                         result = combine_dicts(sub, result)
@@ -99,9 +106,14 @@ class Core(object):
 
         if self.output or self.output_destination != self.DEFAULT_OUTPUT_FILE:
             with open(self.output_destination, 'w') as file:
-                dump(result, file, ensure_ascii=False, indent=4, sort_keys=True)
+                dump(
+                    result,
+                    file,
+                    ensure_ascii=False,
+                    indent=4,
+                    sort_keys=True)
 
-        if self.output == False:
+        if not self.output:
             print(dumps(result, ensure_ascii=False, indent=4, sort_keys=True))
         return
 
@@ -135,7 +147,7 @@ class Core(object):
 
         result = {}
         path_to_file = path.join(root, file)
-        if Regex(path_to_file,self.exclude).match() == False:
+        if Regex(path_to_file, self.exclude).match() == False:
             self.ppath = unset_empty(path_to_file.split(self.path))
             file_hash = Hash(path_to_file, self.algorithm).get()
             result = self.hierarchy(file_hash)
