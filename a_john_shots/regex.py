@@ -1,29 +1,25 @@
 #!/usr/bin/env python
 
-#    python-regex - A simple implementation ot the python.re package
-#    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
+# python-regex - A simple implementation ot the python.re package
+# Copyright (c) 2017 Funilrys - Nissar Chababy <contact at funilrys dot com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#    Original Version: https://github.com/funilrys/python-regex
-
+# Original Version: https://github.com/funilrys/python-regex
 
 from re import compile, search
 
 
 class Regex(object):
-    """A simple implementation ot the python.re package"""
+    """
+    A simple implementation ot the python.re package
+    """
 
     def __init__(self, data, regex, return_data=False, group=0):
         super(Regex, self).__init__()
@@ -35,7 +31,7 @@ class Regex(object):
     def match(self):
         """Used to get exploitable result of re.search"""
 
-        if type(self.regex) is list and isinstance(self.data,str):
+        if isinstance(self.regex, list) and isinstance(self.data, str):
             result = []
             for item in self.regex:
                 to_match = compile(item)
@@ -48,7 +44,7 @@ class Regex(object):
             if self.return_data and result:
                 return result
             return False
-        elif type(self.data) is list and isinstance(self.Regex,str):
+        elif isinstance(self.data, list) and isinstance(self.Regex, str):
             result = []
             for item in self.data:
                 to_match = compile(self.regex)
@@ -61,7 +57,7 @@ class Regex(object):
             if self.return_data and result:
                 return result
             return False
-        elif isinstance(self.data,str) and isinstance(self.regex,str):
+        elif isinstance(self.data, str) and isinstance(self.regex, str):
             toMatch = compile(self.regex)
             result = toMatch.search(self.data)
 
