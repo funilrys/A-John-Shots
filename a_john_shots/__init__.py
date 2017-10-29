@@ -3,18 +3,13 @@
 #    A-John-Shots - Python module/library for saving Security Hash Algorithms into JSON format.
 #    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#    SOFTWARE.
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
@@ -23,4 +18,15 @@ from .core import Core
 
 
 def get(path, **args):
+    """
+    A simple script to get Security Hash Algorithms into JSON format
+
+    :param path: A string, the path of the file or the directory we have to return.
+    :param search: A string, the pattern the file have to match in ordrer to be included in the results
+    :param output: A bool, Print on screen (False), print on file (True)
+    :param output_destination: A string, the destination of the results
+    :param algorithm: A string, the algorithm to use. Possibility: all, sha1, sha224, sha384, sha512
+    :param exclude: A list, the list of path, filename or in general, a pattern to exclude
+    """
+
     return Core(path, **args).get()
