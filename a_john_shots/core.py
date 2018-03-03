@@ -54,8 +54,8 @@ class Core(object):
 
     def __init__(self, path, **args):
         self.directory_separator = sep
-        self.DEFAULT_OUTPUT_FILE = '.' + self.directory_separator + 'faith-slosh.json'
-        self.DEFAULT_EXCLUDE = [r'\.git', r'vendor', r'nbproject']
+        self.default_output_file = '.' + self.directory_separator + 'faith-slosh.json'
+        self.default_exclude = [r'\.git', r'vendor', r'nbproject']
 
         self.path = path
 
@@ -76,7 +76,7 @@ class Core(object):
                 setattr(self, arg, args.get(arg, default))
 
         self.ppath = [self.path]
-        self.exclude.extend(self.DEFAULT_EXCLUDE)
+        self.exclude.extend(self.default_exclude)
 
     def data_to_search(self, data):
         """
@@ -98,7 +98,7 @@ class Core(object):
 
         if isinstance(output_destination, str):
             return output_destination
-        return self.DEFAULT_OUTPUT_FILE
+        return self.default_output_file
 
     def get(self):
         """
@@ -123,7 +123,7 @@ class Core(object):
         else:
             return None
 
-        if self.output or self.output_destination != self.DEFAULT_OUTPUT_FILE:
+        if self.output or self.output_destination != self.default_output_file:
             with open(self.output_destination, 'w') as file:
                 dump(
                     result,
