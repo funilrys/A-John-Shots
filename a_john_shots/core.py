@@ -17,26 +17,42 @@
 from json import dump, dumps
 from os import path, walk
 
-from .hash import Hash
-from .helpers import combine_dicts, unset_empty
-from .regex import Regex
+from a_john_shots.hash import Hash
+from a_john_shots.helpers import combine_dicts, unset_empty
+from a_john_shots.regex import Regex
 
 
 class Core(object):
-    """A simple script to get Security Hash Algorithms into JSON format
+    """
+    A simple script to get Security Hash Algorithms into JSON format
 
-    :param path: A string, the path of the file or the directory we have to return.
-    :param search: A string, the pattern the file have to match in ordrer to be included in the results
-    :param output: A bool, Print on screen (False), print on file (True)
-    :param output_destination: A string, the destination of the results
-    :param algorithm: A string, the algorithm to use. Possibility: all, sha1, sha224, sha384, sha512
-    :param exclude: A list, the list of path, filename or in general, a pattern to exclude
+    Arguments:
+        - path: str
+            The path of the file or the directory we have to return
+        - search: str
+            The pattern the file have to match in order to be included in the
+            results.
+        - output: bool
+            True: Print on file | False: Print on file and on screen.
+        - algorithm: str
+            The algorithm to use.
+            Possibilities:
+                - all
+                - sha1
+                - sha224
+                - sha384
+                - sha512
+        - exclude: list
+            The list of path, filenames or in general, a pattern to exclude.
+
+    Returns:
+        Pretty dict/JSON
     """
 
     def __init__(self, path, **args):
         self.DIRECTORY_SEPARATOR = '/'
         self.DEFAULT_OUTPUT_FILE = '.' + self.DIRECTORY_SEPARATOR + 'faith-slosh.json'
-        self.DEFAULT_EXCLUDE = ['\.git', 'vendor', 'nbproject']
+        self.DEFAULT_EXCLUDE = [r'\.git', r'vendor', r'nbproject']
 
         self.path = path
 
