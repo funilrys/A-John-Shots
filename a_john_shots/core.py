@@ -52,12 +52,12 @@ class Core(object):
         Pretty dict/JSON
     """
 
-    def __init__(self, path, **args):
+    def __init__(self, file_or_dir_path, **args):
         self.directory_separator = sep
         self.default_output_file = '.' + self.directory_separator + 'faith-slosh.json'
         self.default_exclude = [r'\.git', r'vendor', r'nbproject']
 
-        self.path = path
+        self.path = file_or_dir_path
 
         optional_arguments = {
             "search": None,
