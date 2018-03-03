@@ -13,6 +13,9 @@
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
+"""
+This module is the one we use to hash file(s)
+"""
 
 import hashlib
 from os import path
@@ -27,11 +30,11 @@ class Hash(object):
     :param only_hash: A bool, Return only the desired algorithm if algorithm != 'all'.
     """
 
-    def __init__(self, path, algorithm='sha512', only_hash=False):
-        self.VALID_ALGORITHMS = ['all', 'md5',
+    def __init__(self, file_path, algorithm='sha512', only_hash=False):
+        self.valid_algorithms = ['all', 'md5',
                                  'sha1', 'sha224', 'sha384', 'sha512']
 
-        self.path = path
+        self.path = file_path
         self.algorithm = algorithm
         self.only_hash = only_hash
 
@@ -56,10 +59,10 @@ class Hash(object):
 
         result = {}
 
-        if path.isfile(self.path) and self.algorithm in self.VALID_ALGORITHMS:
+        if path.isfile(self.path) and self.algorithm in self.valid_algorithms:
             if self.algorithm == 'all':
-                del self.VALID_ALGORITHMS[0]
-                for algo in self.VALID_ALGORITHMS:
+                del self.valid_algorithms[0]
+                for algo in self.valid_algorithms:
                     result[algo] = None
                     result[algo] = self.hash_data(algo)
             else:
