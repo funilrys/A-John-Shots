@@ -76,7 +76,7 @@ class Core(object):
                 setattr(self, arg, args.get(arg, default))
 
         self.ppath = [self.path]
-        self.exclude.extend(self.default_exclude)
+        self.exclude.extend(self.default_exclude)  # pylint: disable=no-member
 
     def data_to_search(self, data):
         """
@@ -110,21 +110,24 @@ class Core(object):
         file_hash = {}
 
         if path.isfile(self.path):
-            file_hash = Hash(self.path, self.algorithm, False).get()
+            file_hash = Hash(
+                self.path,
+                self.algorithm,  # pylint: disable=no-member
+                False).get()
             result = self.hierarchy(file_hash)
         elif path.isdir(self.path):
             for root, dirs, files in walk(self.path):
                 for file in files:
                     sub = self.get_file_under_directory(root, file)
-                    if not self.search:
+                    if not self.search:  # pylint: disable=no-member
                         result = combine_dicts(sub, result)
-                    elif Regex(file, self.search).match():
+                    elif Regex(file, self.search).match():  # pylint: disable=no-member
                         result = combine_dicts(sub, result)
         else:
             return None
 
-        if self.output or self.output_destination != self.default_output_file:
-            with open(self.output_destination, 'w') as file:
+        if self.output or self.output_destination != self.default_output_file:  # pylint: disable=no-member
+            with open(self.output_destination, 'w') as file:  # pylint: disable=no-member
                 dump(
                     result,
                     file,
@@ -132,7 +135,7 @@ class Core(object):
                     indent=4,
                     sort_keys=True)
 
-        if not self.output:
+        if not self.output:  # pylint: disable=no-member
             print(dumps(result, ensure_ascii=False, indent=4, sort_keys=True))
         return
 
@@ -166,9 +169,12 @@ class Core(object):
 
         result = {}
         path_to_file = path.join(root, file)
-        if Regex(path_to_file, self.exclude).match() == False:
+        if Regex(path_to_file, self.exclude).match(  # pylint: disable=no-member
+        ) == False:
             self.ppath = unset_empty(path_to_file.split(self.path))
-            file_hash = Hash(path_to_file, self.algorithm).get()
+            file_hash = Hash(
+                path_to_file,
+                self.algorithm).get()  # pylint: disable=no-member
             result = self.hierarchy(file_hash)
 
         return result
