@@ -13,9 +13,12 @@
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
+"""
+This is the brain of the module/library.
+"""
 
 from json import dump, dumps
-from os import path, walk
+from os import path, sep, walk
 
 from a_john_shots.hash import Hash
 from a_john_shots.helpers import combine_dicts, unset_empty
@@ -50,8 +53,8 @@ class Core(object):
     """
 
     def __init__(self, path, **args):
-        self.DIRECTORY_SEPARATOR = '/'
-        self.DEFAULT_OUTPUT_FILE = '.' + self.DIRECTORY_SEPARATOR + 'faith-slosh.json'
+        self.directory_separator = sep
+        self.DEFAULT_OUTPUT_FILE = '.' + self.directory_separator + 'faith-slosh.json'
         self.DEFAULT_EXCLUDE = [r'\.git', r'vendor', r'nbproject']
 
         self.path = path
@@ -142,7 +145,7 @@ class Core(object):
         result = {}
 
         for item in self.ppath:
-            hierarchy = unset_empty(item.split(self.DIRECTORY_SEPARATOR))
+            hierarchy = unset_empty(item.split(self.directory_separator))
             local_result = result
 
             for funilrys in hierarchy:
