@@ -78,7 +78,8 @@ class Core(object):
         self.ppath = [self.path]
         self.exclude.extend(self.default_exclude)  # pylint: disable=no-member
 
-    def data_to_search(self, data):
+    @classmethod
+    def data_to_search(cls, data):
         """
         A simple method to filter self.search if it's not a string
 
@@ -116,7 +117,8 @@ class Core(object):
                 False).get()
             result = self.hierarchy(file_hash)
         elif path.isdir(self.path):
-            for root, dirs, files in walk(self.path):
+            for root, dirs, files in walk(  # pylint: disable=unused-variable
+                    self.path):
                 for file in files:
                     sub = self.get_file_under_directory(root, file)
                     if not self.search:  # pylint: disable=no-member
@@ -137,7 +139,7 @@ class Core(object):
 
         if not self.output:  # pylint: disable=no-member
             print(dumps(result, ensure_ascii=False, indent=4, sort_keys=True))
-        return
+        return None
 
     def hierarchy(self, hash_of_file):
         """Build the dictionary of data
@@ -169,8 +171,8 @@ class Core(object):
 
         result = {}
         path_to_file = path.join(root, file)
-        if Regex(path_to_file, self.exclude).match(  # pylint: disable=no-member
-        ) == False:
+        if not Regex(path_to_file, self.exclude).match(  # pylint: disable=no-member
+        ):
             self.ppath = unset_empty(path_to_file.split(self.path))
             file_hash = Hash(
                 path_to_file,
