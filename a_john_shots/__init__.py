@@ -13,20 +13,40 @@
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
+"""
+This is the main entry to a_john_shots.
+A John Shots is a Python module/library for saving Security Hash Algorithms
+into JSON format.
+"""
 
-from .core import Core
+from a_john_shots.core import Core
 
 
 def get(path, **args):
     """
     A simple script to get Security Hash Algorithms into JSON format
 
-    :param path: A string, the path of the file or the directory we have to return.
-    :param search: A string, the pattern the file have to match in ordrer to be included in the results
-    :param output: A bool, Print on screen (False), print on file (True)
-    :param output_destination: A string, the destination of the results
-    :param algorithm: A string, the algorithm to use. Possibility: all, sha1, sha224, sha384, sha512
-    :param exclude: A list, the list of path, filename or in general, a pattern to exclude
+    Arguments:
+        - path: str
+            The path of the file or the directory we have to return
+        - search: str
+            The pattern the file have to match in order to be included in the
+            results.
+        - output: bool
+            True: Print on file | False: Print on file and on screen.
+        - algorithm: str
+            The algorithm to use.
+            Possibilities:
+                - all
+                - sha1
+                - sha224
+                - sha384
+                - sha512
+        - exclude: list
+            The list of path, filenames or in general, a pattern to exclude.
+
+    Returns:
+        Pretty dict/JSON
     """
 
     return Core(path, **args).get()
