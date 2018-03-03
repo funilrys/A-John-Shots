@@ -13,6 +13,10 @@
 
 #    Original Version: https://github.com/funilrys/A-John-Shots
 
+"""
+This module provide some helpers to a_john_shots
+"""
+
 
 def unset_empty(list_to_format):
     """
@@ -34,12 +38,12 @@ def combine_dicts(dict1, dict2):
 
     result = {}
 
-    for k, v in dict1.items():
-        if k in dict2.keys():
-            if isinstance(dict2[k], dict):
-                result[k] = combine_dicts(v, dict2.pop(k))
+    for key, value in dict1.items():
+        if key in dict2.keys():
+            if isinstance(dict2[key], dict):
+                result[key] = combine_dicts(value, dict2.pop(key))
         else:
-            result[k] = v
-    for k, v in dict2.items():
-        result[k] = v
+            result[key] = value
+    for key, value in dict2.items():
+        result[key] = value
     return result
