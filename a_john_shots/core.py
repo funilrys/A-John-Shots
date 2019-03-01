@@ -1,182 +1,176 @@
-#!/bin/env python
-
-#    A-John-Shots - Python module/library for saving Security Hash Algorithms into JSON format.
-#    Copyright (C) 2017  Funilrys - Nissar Chababy <contact at funilrys dot com>
-#
-#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#    SOFTWARE.
-
-#    Original Version: https://github.com/funilrys/A-John-Shots
+#!/bin/env python3
 
 """
-This is the brain of the module/library.
+A John Shots - A tool to get the Security Hash Algorightms (SHA) of all file in a given path.
+
+This submodule provide the brain of the module.
+
+Author:
+    Nissar Chababy, @funilrys, contactTATAfunilrysTODTODcom
+
+Contributors:
+    Let's contribute to A John Shots!
+
+Project link:
+    https://github.com/funilrys/A-John-Shots
+
+License:
+::
+
+    MIT License
+
+    Copyright (c) 2017-2019 Nissar Chababy
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 """
+# pylint: disable=bad-continuation
 
-from json import dump, dumps
-from os import path, sep, walk
+from os import path
+from os import sep as directory_separator
+from os import walk
 
+from a_john_shots.defaults import DEFAULT_EXCLUDE
 from a_john_shots.hash import Hash
-from a_john_shots.helpers import combine_dicts, unset_empty
-from a_john_shots.regex import Regex
+from a_john_shots.helpers import Regex, combine_dicts
 
 
-class Core(object):
+class Core:
     """
-    A simple script to get Security Hash Algorithms into JSON format
+    The real brain of the module.
 
-    Arguments:
-        - path: str
-            The path of the file or the directory we have to return
-        - search: str
-            The pattern the file have to match in order to be included in the
-            results.
-        - output: bool
-            True: Print on file | False: Print on file and on screen.
-        - algorithm: str
-            The algorithm to use.
-            Possibilities:
-                - all
-                - sha1
-                - sha224
-                - sha384
-                - sha512
-        - exclude: list
-            The list of path, filenames or in general, a pattern to exclude.
+    :param file_or_dir_path: The file or directory we are working with.
+    :type file_or_dir_path: str
 
-    Returns:
-        Pretty dict/JSON
+    :param algorithm:
+        The SHA to use. Can be one of the following:
+        ::
+
+            - all
+            - sha1
+            - sha224
+            - sha384
+            - sha51
+    :type algorithm: str
+
+    :param search:
+        The pattern the filename have to match in order to be
+        taken in consideration.
+    :type search: str
+
+    :param exclude:
+        The pattern the filename have to match in order to be
+        excluded.
+    :type exclude: str
     """
 
-    def __init__(self, file_or_dir_path, **args):
-        self.directory_separator = sep
-        self.default_output_file = '.' + self.directory_separator + 'faith-slosh.json'
-        self.default_exclude = [r'\.git', r'vendor', r'nbproject']
+    def __init__(self, file_or_dir_path, search=None, algorithm="sha512", exclude=None):
+        if isinstance(search, str):
+            self.search = search
+        else:
+            self.search = None
 
-        self.path = file_or_dir_path
+        if exclude is None:
+            self.exclude = []
+        elif isinstance(exclude, list):
+            self.exclude = exclude
+        else:
+            self.exclude = [exclude]
 
-        optional_arguments = {
-            "search": None,
-            "output": False,
-            "output_destination": None,
-            "algorithm": "sha512",
-            "exclude": []
-        }
+        if file_or_dir_path == ".":
+            self.path = f"{file_or_dir_path}{directory_separator}"
+        else:
+            self.path = file_or_dir_path
 
-        for (arg, default) in optional_arguments.items():
-            if arg == "search":
-                setattr(self, arg, args.get(arg, self.data_to_search(default)))
-            elif arg == "output_destination":
-                setattr(self, arg, args.get(arg, self.destination(default)))
-            else:
-                setattr(self, arg, args.get(arg, default))
-
+        self.algorithm = algorithm
         self.ppath = [self.path]
-        self.exclude.extend(self.default_exclude)  # pylint: disable=no-member
-
-    @classmethod
-    def data_to_search(cls, data):
-        """
-        A simple method to filter self.search if it's not a string
-
-        :param data: A string, the data to search
-        """
-
-        if isinstance(data, str):
-            return data
-        return False
-
-    def destination(self, output_destination):
-        """
-        A simple method to filter self.destination if it's not a string
-
-        :param output_destination: A string, the output destination
-        """
-
-        if isinstance(output_destination, str):
-            return output_destination
-        return self.default_output_file
+        self.exclude.extend(DEFAULT_EXCLUDE)
 
     def get(self):
         """
-        Brain of the program.
-        In charge to print the results into JSON format
+        Return the :code:`dict` tree representing the given path childs.
         """
 
         result = {}
         file_hash = {}
 
         if path.isfile(self.path):
-            file_hash = Hash(
-                self.path,
-                self.algorithm,  # pylint: disable=no-member
-                False).get()
+            file_hash = Hash(self.path, self.algorithm, False).get()
             result = self.hierarchy(file_hash)
         elif path.isdir(self.path):
-            for root, dirs, files in walk(  # pylint: disable=unused-variable
-                    self.path):
+            for root, _, files in walk(self.path):
                 for file in files:
-                    sub = self.get_file_under_directory(root, file)
-                    if not self.search:  # pylint: disable=no-member
+                    sub = self.get_childs(root, file)
+                    if not self.search:
                         result = combine_dicts(sub, result)
-                    elif Regex(file, self.search).match():  # pylint: disable=no-member
+                    elif Regex(file, self.search).match():
                         result = combine_dicts(sub, result)
         else:
-            return None
+            raise Exception("Given file/dir path not found.")
 
-        if self.output or self.output_destination != self.default_output_file:  # pylint: disable=no-member
-            with open(self.output_destination, 'w') as file:  # pylint: disable=no-member
-                dump(
-                    result,
-                    file,
-                    ensure_ascii=False,
-                    indent=4,
-                    sort_keys=True)
-
-        if not self.output:  # pylint: disable=no-member
-            print(dumps(result, ensure_ascii=False, indent=4, sort_keys=True))
-        return None
+        return result
 
     def hierarchy(self, hash_of_file):
-        """Build the dictionary of data
+        """
+        Build the hierarchy tree.
 
-        :param hash_of_file: A dict, Hash of the current file.
+        :param hash_of_file: A dict representing a file and its hash.
+        :type hash_of_file: dict
+
+        :return: The hierarchy tree.
+        :rtype: dict
         """
 
         result = {}
 
         for item in self.ppath:
-            hierarchy = unset_empty(item.split(self.directory_separator))
+            hierarchy = [x for x in item.split(directory_separator) if x]
             local_result = result
 
             for funilrys in hierarchy:
                 if funilrys == hierarchy[-1]:
-                    local_result = local_result.setdefault(
-                        funilrys, hash_of_file)
+                    local_result = local_result.setdefault(funilrys, hash_of_file)
                 else:
                     local_result = local_result.setdefault(funilrys, {})
 
         return result
 
-    def get_file_under_directory(self, root, file):
-        """Get the file(s) which is/are under the current directory
+    def get_childs(self, root, file):
+        """
+        Get the childs of the current directory.
 
-        :param root: A string, the current root
-        :param file: A string, the current file
+        :param root: The current root absolute path.
+        :type root: str
+
+        :param file: The current file absolute path.
+        :type file: str
+
+        :return: A :code:`dict` with the hash of the currently read file.
+        :rtype: dict
         """
 
         result = {}
-        path_to_file = path.join(root, file)
-        if not Regex(path_to_file, self.exclude).match(  # pylint: disable=no-member
-        ):
-            self.ppath = unset_empty(path_to_file.split(self.path))
-            file_hash = Hash(
-                path_to_file,
-                self.algorithm).get()  # pylint: disable=no-member
+        path_to_file = f"{root}{directory_separator}{file}"
+
+        if not Regex(path_to_file, self.exclude, return_data=False).loop_matching():
+            self.ppath = [x for x in path_to_file.split(self.path) if x]
+
+            file_hash = Hash(path_to_file, self.algorithm).get()
             result = self.hierarchy(file_hash)
 
         return result
